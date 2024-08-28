@@ -3,14 +3,21 @@
 //Incluimos modulo bcrypt para encriptar las contraseñas
 var bcrypt = require('bcrypt-nodejs');
 
-const message = require('../models/message');
 var User = require('../models/user');
 
 //Importamos el servicio de jwt token
 var jwt = require('../services/jwt');
 
 //Importamos mongoose paginate
-var mongoosePaginate = require('mongoose-pagination')
+var mongoosePaginate = require('mongoose-pagination');
+
+//Incluimos la librería fs para trabajar con archivos y la path para trabajar con rutas del sistema de ficheros
+var fs = require('fs');
+var path = require('path');
+const { escape } = require('querystring');
+const follow = require('../models/follow');
+
+
 
 
 function home(req, res){
@@ -125,15 +132,24 @@ function loginUser(req, res){
     )
 }
 
+
+
 //Obtener datos de usuario
 function getUser(req, res){
     var id = req.params.id;
+
+    var user_logged = req.user.sub;
 
     User.findById(id).exec().then( user => {
 
         if(!user) return res.status(404).send({message: "El usuario no existe"});
 
-        return res.status(200).send({user});
+        follow.findOne({'user': user_logged, 'followed':id}).then(follow => {
+            return res.status(200).send({user, follow});
+
+        }).catch(err => {
+            if(err) return res.status(500).send({message: "Error en la petición"});
+        })
     }).catch(err => {
         if(err) return res.status(500).send({message: "Error en la petición"});
 
@@ -171,11 +187,121 @@ function getUsers(req, res){
     })
 }
 
+
+//Editar datos de usuarios
+function updateUser(req, res){
+    var id = req.params.id;
+    var update = req.body;
+
+    //Eliminamos la propiedad contraseña por seguridad (se modificará en un método por separado)
+    delete update.password;
+
+    //Comprobamos si el id del usuario coincide con el que me llega en la request
+    if(id != req.user.sub){
+        return res.status(500).send({message: "No tienes permisos para actualizar los datos del usuario."})
+    }
+
+    User.findByIdAndUpdate(id, update, {new: true}).exec().then(
+        userUpdated => {
+            if(!userUpdated){
+                return res.send(404).send({message: "No se ha podido actualizar el usuario"});
+            }
+
+            return res.status(200).send({user: userUpdated});
+        }
+    ).catch(
+        err => {
+            if(err) return res.status(500).send({message: "Error en la petición"});
+        }
+    )
+}
+
+//Subir archivos de imagen de usuario
+async function uploadImage(req, res){
+    var id = req.params.id;
+
+
+    
+    //Si estamos enviando un fichero, lo subimos y lo guardamos en la db
+    if(req.files){
+            
+        var file_path = req.files.image.path;
+        var file_split = file_path.split('\\');
+
+        var file_name = file_split[2];
+        
+        //Comprobamos si el id del usuario coincide con el que me llega en la request
+        if(id != req.user.sub){
+            return removeFilesOfUploads(res, file_path, "No tienes permisos para actualizar los datos del usuario.");
+        }
+
+        //Comprobamos si es imagen
+        var ext_split = file_name.split('\.');
+        var file_ext = ext_split[1].toLowerCase();
+
+        if((file_ext == "jpg") || (file_ext == "png") || (file_ext == "jpeg") || ( file_ext == "gif")){
+
+            var old_user = await User.findById(id).exec();
+            
+            var old_path = old_user.image;
+
+            console.log(old_path);
+
+            //Actualizamos documento de usuario logueado
+            await User.findByIdAndUpdate(id, {image: file_name}, {new: true}).exec().then(userUpdated => {
+                if(!userUpdated){
+                    return res.send(404).send({message: "No se ha podido actualizar el usuario"});
+                }
+
+                //Si tenía ya una imagen, la borramos
+                if(old_path){
+                    fs.unlink(file_split[0] + "\\" + file_split[1] + "\\" + old_path, (err) =>{
+                    });
+                }
+
+                return res.status(200).send({user: userUpdated});
+            }).catch(err =>{
+                if(err) return res.status(500).send({message: "Error en la petición"});
+            })
+        }
+        else{
+            return removeFilesOfUploads(res, file_path, "Extensión no válida");
+
+        }
+
+    }else{
+        return res.status(200).send({message: "No se han subido imágenes"});
+    }
+};
+
+//Le pasamos la respuesta para poder devolverla
+function removeFilesOfUploads(res, file_path, message){
+    fs.unlink(file_path, (err) => {
+           return res.status(200).send({message});
+   });
+}
+
+function getImageFile(req, res){
+    var image_file = req.params.imageFile;
+
+    var path_file = './uploads/users/' + image_file;
+
+    if(fs.existsSync(path_file)){
+        res.sendFile(path.resolve(path_file));
+    }else{
+        res.status(200).send({message: "No existe esa imagen."})
+    }
+}
+
+ 
 module.exports = {
     home,
     pruebas,
     saveUser,
     loginUser,
     getUser,
-    getUsers
+    getUsers,
+    updateUser,
+    uploadImage,
+    getImageFile
 }
