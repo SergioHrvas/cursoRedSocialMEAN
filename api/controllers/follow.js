@@ -9,11 +9,8 @@ var jwt = require('../services/jwt');
 //Importamos mongoose paginate
 var mongoosePaginate = require('mongoose-pagination');
 
-//Incluimos la librería fs para trabajar con archivos y la path para trabajar con rutas del sistema de ficheros
-//var fs = require('fs');
-//var path = require('path');
-//const { escape } = require('querystring');
-
+//Importamos la libreria moment para generar fechas
+var moment = require("moment");
 
 function prueba(req, res){
     res.status(200).send({messsage: "Hola, esto es una prueba desde el controlador Follow."})
@@ -30,6 +27,9 @@ function followUser(req, res){
     //Seteo el usuario seguido
     follow.followed = params.followed;
 
+
+    follow.created_at = moment().unix();
+    
     follow.save().then(followStored => {
         if(!followStored){
             return res.status(404).send({message: "Error al guardar el seguimiento."})
@@ -49,7 +49,7 @@ function unfollowUser(req, res){
             return res.status(200).send({message: "Se ha realizado el unfollow correctamente."})
         }
     ).catch(err => {
-        return res.status(500).send({message: "No se ha podido realizar la operación de seguimiento."})
+        return res.status(500).send({message: "No se ha podido realizar la operacion."})
 
     })
 

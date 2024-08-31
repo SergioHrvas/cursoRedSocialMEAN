@@ -13,6 +13,7 @@ var UserSchema = Schema({
     email: String,
     role: String,
     image: String,
+    created_at: String
 });
 
 //exportamos el esquema

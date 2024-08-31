@@ -5,6 +5,9 @@ var bcrypt = require('bcrypt-nodejs');
 
 var User = require('../models/user');
 
+//Importamos la libreria moment para generar fechas
+var moment = require("moment");
+
 //Importamos el servicio de jwt token
 var jwt = require('../services/jwt');
 
@@ -17,6 +20,7 @@ var path = require('path');
 const { escape } = require('querystring');
 const Follow = require('../models/follow');
 
+const Publication = require('../models/publication');
 
 
 
@@ -47,6 +51,7 @@ function saveUser(req, res){
         user.email = params.email;
         user.role = "ROLE_USER";
         user.image = null;
+        user.created_at = moment().unix();
 
         User.find({ $or: [
             {
@@ -304,8 +309,6 @@ async function uploadImage(req, res){
             
             var old_path = old_user.image;
 
-            console.log(old_path);
-
             //Actualizamos documento de usuario logueado
             await User.findByIdAndUpdate(id, {image: file_name}, {new: true}).exec().then(userUpdated => {
                 if(!userUpdated){
@@ -357,32 +360,38 @@ function getCounters(req, res){
 
     if(req.params.id){
         userId = req.params.id;
-
     }
+    
     getCountFollow(userId).then(counters => {
-        res.status(200).send({counters});
+        return res.status(200).send({counters});
     }).catch(err => {
         if(err) return res.status(500).send({message: "Error en la petición"});
     })
 }
 
 async function getCountFollow(userId){
-    var following = await Follow.count({"user": userId}).then(count => {
+    var following = await Follow.countDocuments({"user": userId}).then(count => {
         return count;
     }).catch(err => {
         if(err) return res.status(500).send({message: "Error en la petición"});
     }
     );
     
-    var followed = await Follow.count({"followed": userId}).then(count => {
+    var followed = await Follow.countDocuments({"followed": userId}).then(count => {
         return count;
     }).catch(err => {
         if(err) return res.status(500).send({message: "Error en la petición"});
     }
     );
     
-    return {following, followed};
-}
+    var publications = await Publication.countDocuments({"user": userId}).then(count => {
+        return count;
+    }).catch(err => {
+        if(err) handleError(err);
+    }
+    );
+
+    return {following, followed, publications};}
 
  
 module.exports = {
