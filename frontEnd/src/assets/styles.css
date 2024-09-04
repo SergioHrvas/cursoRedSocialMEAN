@@ -1,0 +1,35 @@
+/*Generales*/
+.h1-strong{
+    font-size:35px;
+    font-weight:bold;
+    margin-left:13px;
+    border-bottom:1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom:20px;
+}
+
+.active{
+    border-bottom: 3px solid yellow;
+    background-color: #0096db; 
+}
+/*HEADER*/
+.navigation{
+    margin: 0px;
+    padding: 0px !important;
+    border-radius: 0px !important;
+}
+
+.navigation .navbar{
+    border-radius: 0px !important;
+    background: #00acee !important;
+    border: 0px;
+}
+
+.navigation .navbar *{
+    color: white !important;
+}
+
+.navigation .navbar a:hover{
+    background-color: #28bbff !important; 
+}
+
