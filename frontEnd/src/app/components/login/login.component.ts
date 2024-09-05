@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit{
             "ROLE_USER",
             "",
             "",
-            true
         )
         this.identity = "";
         this.token = "";
@@ -52,7 +51,6 @@ export class LoginComponent implements OnInit{
                 if(!this.identity || !this.identity._id){
                     this.status = "error";
                 }else{
-                    this.status = "success";
                     //PERSISTIR DATOS DEL USUARIO
                     if (typeof localStorage !== 'undefined') {
                         localStorage.setItem('Identity', JSON.stringify(this.identity))
@@ -85,7 +83,6 @@ export class LoginComponent implements OnInit{
                 if(this.token.length <= 0){
                     this.status = "error";
                 }else{
-                    this.status = "success";
                     //PERSISTIR TOKEN DE USUARIO
                     if (typeof localStorage !== 'undefined') {
                         localStorage.setItem('Token', JSON.stringify(this.token))
@@ -97,6 +94,8 @@ export class LoginComponent implements OnInit{
                       }
 
                     //Conseguir los contadores del usuario
+                      this.getCounters();
+
                 }
 
             },
@@ -105,6 +104,23 @@ export class LoginComponent implements OnInit{
                 if(<any>error != null){
                     this.status = 'error';
                 }
+            }
+        );
+    }
+
+    getCounters(){
+        this._userService.getCounters().subscribe(
+            response => {
+
+                localStorage.setItem('stats', JSON.stringify(response))
+                this.status = "success";
+
+                this._router.navigate(['/']);
+
+            },
+            error =>{
+                console.log(error);
+
             }
         );
     }

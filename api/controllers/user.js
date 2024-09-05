@@ -99,7 +99,7 @@ function saveUser(req, res){
 function loginUser(req, res){
     //Recogemos los parámetros del body
     var params = req.body;
-    console.log(params);
+
     var email = params.email;
     var password = params.password;
     var gettoken;

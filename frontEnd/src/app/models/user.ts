@@ -8,7 +8,6 @@ export class User{
         public role: String,
         public image: String,
         public created_at: String,
-        public gettoken: any
     ){}
 
 }

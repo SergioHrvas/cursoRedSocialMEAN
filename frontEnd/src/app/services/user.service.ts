@@ -9,11 +9,14 @@ export class UserService{
     public url:string;
     public identity: any;
     public token: string;
-
+    public stats: any;
+    
     constructor(public _http: HttpClient){
         this.url = GLOBAL.url;
         this.token = "";
         this.identity = null;
+        this.stats = null;
+        
     }
 
 
@@ -27,7 +30,7 @@ export class UserService{
         
     }
 
-    loginUser(user: User, gettoken = null): Observable<any>{
+    loginUser(user: any, gettoken = null): Observable<any>{
         if(user != null){
             user.gettoken = gettoken;
         }
@@ -49,7 +52,6 @@ export class UserService{
             console.log('Web Storage is not supported in this environment.');
           }
         
-        console.log("Aaa: "+  item);
         var identity = item != null ? JSON.parse(item) : JSON.parse("null");
 
         if(identity != "undefined"){
@@ -60,6 +62,7 @@ export class UserService{
         }
         return this.identity;
     }
+    
 
     getToken(){
         var item;
@@ -83,4 +86,27 @@ export class UserService{
         return this.token;
     }
 
+    getStats(){
+        let stats_local = localStorage.getItem('stats');
+        let stats = stats_local != null ? JSON.parse(stats_local) : JSON.parse("");
+        
+        if(stats != "undefined"){
+            this.stats = stats;
+        }else{
+            this.stats = null;
+        }
+        return this.stats;
+    }
+
+    getCounters(userId = null): Observable<any>{
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.getToken());
+
+        if(userId != null){
+            return this._http.get(this.url+"follow-counters/"+ userId, {headers: headers});
+        }else{
+            return this._http.get(this.url+"follow-counters/", {headers: headers});
+        }
+
+        return new Observable();
+    }
 }
