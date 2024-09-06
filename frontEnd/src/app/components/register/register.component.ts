@@ -23,6 +23,7 @@ export class RegisterComponent implements OnInit{
         this.user = new User(
             "",
             "",
+            "",
             "", 
             "",
             "",

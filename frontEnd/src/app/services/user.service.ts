@@ -109,4 +109,15 @@ export class UserService{
 
         return new Observable();
     }
+
+    updateUser(user_to_register: User): Observable<any>{
+        //Convertimos el objeto usuario en JSON
+        let params = JSON.stringify(user_to_register);
+
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.getToken());
+
+        return this._http.put(this.url+"update-user/" + user_to_register._id, params, {headers: headers})
+        
+    }
+
 }
