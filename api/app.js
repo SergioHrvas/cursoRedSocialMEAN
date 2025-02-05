@@ -5,7 +5,7 @@ var express = require('express');
 
 //Cargamos el módulo del body parser
 var bodyParser = require('body-parser')
-
+const cors = require('cors');
 var app = express();
 
 //**cargar rutas
@@ -21,6 +21,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 // cors
+app.use(cors());
+
 // configurar cabeceras http
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');

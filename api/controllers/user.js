@@ -313,10 +313,9 @@ async function uploadImage(req, res){
 
     
     //Si estamos enviando un fichero, lo subimos y lo guardamos en la db
-    if(req.files){
-            
+    if(req.files && req.files.image){
         var file_path = req.files.image.path;
-        var file_split = file_path.split('\\');
+        var file_split = file_path.split('/');
 
         var file_name = file_split[2];
         

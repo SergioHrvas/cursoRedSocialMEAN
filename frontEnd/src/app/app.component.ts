@@ -3,6 +3,7 @@ import { UserService } from './services/user.service';
 
 //Importamos el router para la redirección del logout
 import {Router, ActivatedRoute, Params} from '@angular/router'
+import { GLOBAL } from './services/global';
  
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ export class AppComponent implements OnInit, DoCheck{
   public title: string;
   public identity: any;
 
+  public url: string = GLOBAL.url;
   constructor(
     private _userService: UserService,
     private _route: ActivatedRoute,

@@ -45,9 +45,11 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right" *ngIf="identity">
-        <li class="avatar">
-          <!--cargar imagen de usuario-->
-        </li>
+        <li class="avatar" *ngIf="identity">
+          <img src="{{ url + 'get-image-user/' + identity.image }}" 
+          class="rounded-circle" 
+          style="border-radius: 50% !important; width: 60px !important; height: 60px !important; object-fit: cover;" />
+             </li>
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#">
             {{identity.name}} <span class="caret"></span>

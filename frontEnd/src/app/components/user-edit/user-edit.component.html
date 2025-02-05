@@ -38,7 +38,17 @@
                 El email no es válido.
             </span>
         </p>    
-        <input type="submit" value="{{title}}" class="btn btn-warning" [disabled]="!userEditForm.form.valid"/>
 
+        <div *ngIf="user.image">
+            <img style="width: 200px;" class="img-fluid" src="{{ url + 'get-image-user/' + user.image}}" />
+        </div>
+
+
+        <p>
+            <label>Imagen de perfil</label>
+            <input type="file" placeholder="Subir imagen" (change)="fileChangeEvent($event)"/>
+        </p>
+
+        <input type="submit" value="{{title}}" class="btn btn-warning" [disabled]="!userEditForm.form.valid"/>
     </form>
 </div>
