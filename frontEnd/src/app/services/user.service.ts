@@ -43,14 +43,9 @@ export class UserService{
 
     getIdentity(){
         var item = null;
-        if (typeof localStorage !== 'undefined') {
+        if (typeof window !== 'undefined' && localStorage) {
             item = localStorage.getItem('Identity');
-        } else if (typeof sessionStorage !== 'undefined') {
-            item = sessionStorage.getItem('Identity');
-          } else {
-            // If neither localStorage nor sessionStorage is supported
-            console.log('Web Storage is not supported in this environment.');
-          }
+        } 
         
         var identity = item != null ? JSON.parse(item) : JSON.parse("null");
 
@@ -66,23 +61,18 @@ export class UserService{
 
     getToken(){
         var item;
-        if (typeof localStorage !== 'undefined') {
+        if (typeof window !== 'undefined' && localStorage) {
             item = localStorage.getItem('Token');
-        } else if (typeof sessionStorage !== 'undefined') {
-            item = sessionStorage.getItem('Token');
-          } else {
-            // If neither localStorage nor sessionStorage is supported
-            console.log('Web Storage is not supported in this environment.');
-          }
-        
-        var token = item != null ? JSON.parse(item) : JSON.parse("null");
+        } 
+        var token = item != null ? JSON.parse(item) : null;
 
-        if(token != "undefined"){
+        if(token != null){
             this.token = token;
         }
         else{
             this.token = "";
         }
+
         return this.token;
     }
 
@@ -120,4 +110,20 @@ export class UserService{
         
     }
 
+
+    getUsers(page = null): Observable<any>{
+        const url = `${this.url}users/${page}/10`;
+        
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.getToken());
+ 
+        return this._http.get(this.url + 'users/' + page + '/' + 10, {headers: headers})
+    }
+
+    getUser(id: string): Observable<any>{
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.getToken());
+
+
+        return this._http.get(this.url + 'user', {headers: headers})
+
+    }
 }

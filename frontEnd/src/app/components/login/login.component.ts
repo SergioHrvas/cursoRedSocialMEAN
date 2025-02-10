@@ -53,14 +53,9 @@ export class LoginComponent implements OnInit{
                     this.status = "error";
                 }else{
                     //PERSISTIR DATOS DEL USUARIO
-                    if (typeof localStorage !== 'undefined') {
+                    if (typeof window !== 'undefined' && localStorage) {
                         localStorage.setItem('Identity', JSON.stringify(this.identity))
-                    } else if (typeof sessionStorage !== 'undefined') {
-                        sessionStorage.setItem('Identity', JSON.stringify(this.identity))
-                    } else {
-                        // If neither localStorage nor sessionStorage is supported
-                        console.log('Web Storage is not supported in this environment.');
-                      }
+                    }
                     
 
                     //Conseguir token
@@ -85,14 +80,9 @@ export class LoginComponent implements OnInit{
                     this.status = "error";
                 }else{
                     //PERSISTIR TOKEN DE USUARIO
-                    if (typeof localStorage !== 'undefined') {
+                    if (typeof window !== 'undefined' && localStorage) {
                         localStorage.setItem('Token', JSON.stringify(this.token))
-                    } else if (typeof sessionStorage !== 'undefined') {
-                        sessionStorage.setItem('Token', JSON.stringify(this.token))
-                    } else {
-                        // If neither localStorage nor sessionStorage is supported
-                        console.log('Web Storage is not supported in this environment.');
-                      }
+                    }
 
                     //Conseguir los contadores del usuario
                       this.getCounters();

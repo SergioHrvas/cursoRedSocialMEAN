@@ -190,6 +190,7 @@ function getUsers(req, res){
     //Recogemos el id del usuario logeado en este momento (por el middleware)
     var identity_user_id = req.user.sub;
 
+    console.log("aaaas")
     var page = 1;
 
     if(req.params.page){
@@ -207,6 +208,7 @@ function getUsers(req, res){
         var total = users.length;
 
         followUsersIds(identity_user_id).then((value) => {
+            console.log(users)
             return res.status(200).send({
                 users,
                 total,

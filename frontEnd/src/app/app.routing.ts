@@ -14,7 +14,9 @@ const appRoutes: Routes = [
     {path: 'login', component: LoginComponent},
     {path: 'registro', component: RegisterComponent},
     {path: 'mis-datos', component: UserEditComponent},
-    {path: 'usuarios', component: UsersComponent},
+    { path: 'usuarios', redirectTo: 'usuarios/1', pathMatch: 'full' },
+    { path: 'usuarios/:page', component: UsersComponent },
+    
     {path: '**', component: HomeComponent}
     
 ]

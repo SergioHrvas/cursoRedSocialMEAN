@@ -10,6 +10,7 @@ var moment = require("moment");
 var secret = "clave_secreta_curso123";
 
 exports.ensureAuth = function(req, res, next){
+    console.log("vvvvvvv")
     if(!req.headers.authorization){
         return res.status(403).send({message: "La petición no tiene la cabecera de autenticación."})
     }
