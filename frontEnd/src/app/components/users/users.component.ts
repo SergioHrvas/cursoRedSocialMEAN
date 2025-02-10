@@ -26,6 +26,7 @@ export class UsersComponent implements OnInit{
 
     public status: String = "success"
 
+    public url: string = GLOBAL.url;
 
     public users: any[] = []
     

@@ -56,3 +56,28 @@
 .pointer{
     cursor:pointer !important;
 }
+
+.item-user .image-user{
+    width: 75px;
+    height: 75px;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-top: 9px;
+    margin-right: 30px;
+}
+
+.item-user .image-user img{
+    width: 75px;
+}
+
+.item-user .user-name{
+    margin-top: 20px
+}
+
+.item-user .user-name .username{
+    color: grey
+}
+
+.item-user .user-name .name-surname{
+    font-weight: bold;
+}
