@@ -9,9 +9,9 @@
                 <div class="card-body">
                     <div class="image-user float-left">
                         <a href="#">
-                            <img class="img_user" src="{{ url + 'get-image-user/' + user.image}}" *ngIf="user.image"/>
-                        
-                            <img class="img_user" src="img/user.png" *ngIf="!user.image"/>
+                            <img class="img_user" src="{{ url + 'get-image-user/' + user.image}}" *ngIf="user.image" />
+
+                            <img class="img_user" src="img/user.png" *ngIf="!user.image" />
                         </a>
                     </div>
 
@@ -25,23 +25,34 @@
                             {{'@' + user.username}}
                         </p>
                     </div>
-                    
+
                     <!-- Seguimientos -->
                     <div class="float-right">
-                        <button type="button" class="btn btn-primary mr-2">
+                        <button type="button" class="btn btn-primary mr-2" *ngIf="follows.indexOf(user._id) < 0">
                             <span class="bi bi-person-fill-add"></span>
                             Seguir
                         </button>
                         
-                        <button type="button" class="btn btn-secondary">
-                            <span class="bi bi-person-fill-dash"></span>
-                            Dejar de seguir
+                        <button type="button" class="btn"
+                        [class.btn-outline-secondary]="user._id == followUserOver"
+                        [class.btn-secondary]="user._id != followUserOver"
+                         *ngIf="follows.indexOf(user._id) >= 0"
+                            (mouseenter)="mouseEnter(user._id)" (mouseleave)="mouseLeave(user._id)">
+                            <span *ngIf="user._id == followUserOver; else following">
+                                <span class="bi bi-person-fill-dash"></span>
+                                Dejar de seguir
+                            </span>
+
+                            <ng-template #following>
+                                <span class="bi bi-person-fill-check"></span>
+                                Siguiendo
+                            </ng-template>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-        
+
 
         <!-- Paginación -->
         <nav aria-label="Page navigation">

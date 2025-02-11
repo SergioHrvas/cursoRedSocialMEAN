@@ -30,8 +30,10 @@ export class UsersComponent implements OnInit{
 
     public users: any[] = []
     
-    public follows = []
-    public followers = []
+    public follows: string[] = []
+    public followers: string[] = []
+
+    public followUserOver: any;
 
     constructor(
         private _route: ActivatedRoute,
@@ -117,5 +119,13 @@ export class UsersComponent implements OnInit{
         )
     }
 
+    mouseEnter(user_id: any){
+        this.followUserOver = user_id;
+    }   
+
+    mouseLeave(user_id: any){
+
+        this.followUserOver = 0;
+    }
     
 }

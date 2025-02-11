@@ -108,3 +108,9 @@
 .icono-navbar{
     margin-right: 6px;
 }
+
+.btn-outline-secondary {
+    border: 1px solid #6c757d !important;
+    color: #6c757d !important;
+    background-color: transparent !important;
+}
