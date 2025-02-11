@@ -11,9 +11,6 @@ var moment = require("moment");
 //Importamos el servicio de jwt token
 var jwt = require('../services/jwt');
 
-//Importamos mongoose paginate
-var mongoosePaginate = require('mongoose-pagination');
-
 //Incluimos la librería fs para trabajar con archivos y la path para trabajar con rutas del sistema de ficheros
 var fs = require('fs');
 var path = require('path');
@@ -141,85 +138,89 @@ function loginUser(req, res){
 
 
 //Obtener datos de usuario
-function getUser(req, res){
+function getUser(req, res) {
     var id = req.params.id;
 
     var user_logged = req.user.sub;
 
-    User.findById(id).exec().then( user => {
+    User.findById(id).exec().then(user => {
 
-        if(!user) return res.status(404).send({message: "El usuario no existe"});
+        if (!user) return res.status(404).send({ message: "El usuario no existe" });
 
-        
+
         followThisUser(id, user_logged).then(followData => {
-            return res.status(200).send({user, "following": followData.following, "followed": followData.followed});
+            return res.status(200).send({ user, "following": followData.following, "followed": followData.followed });
 
         }).catch(err => {
-            if(err) return res.status(500).send({message: "Errosr en la petición"});
+            if (err) return res.status(500).send({ message: "Errosr en la petición" });
         }
         );
 
     }).catch(err => {
-        if(err) return res.status(500).send({message: "Error en la petición"});
+        if (err) return res.status(500).send({ message: "Error en la petición" });
 
     });
 }
 
-async function followThisUser(identity_user_id, user_id){
+async function followThisUser(identity_user_id, user_id) {
 
     //Saco si el usuario me sigue a mi
-    var followed = await Follow.findOne({'user': identity_user_id, 'followed': user_id}).then(follow => {
+    var followed = await Follow.findOne({ 'user': identity_user_id, 'followed': user_id }).then(follow => {
         return follow;
     }).catch(err => {
-        if(err) return handleError(err);
+        if (err) return handleError(err);
     })
 
     //Si sigo al usuario
-    var following = await Follow.findOne({'user': user_id, 'followed': identity_user_id}).then(follow => {
+    var following = await Follow.findOne({ 'user': user_id, 'followed': identity_user_id }).then(follow => {
         return follow;
     }).catch(err => {
-        if(err) return handleError(err);
+        if (err) return handleError(err);
     })
 
-    return {following, followed};
+    return { following, followed };
 }
 
 
 //Obtener lista de usuarios paginados
-function getUsers(req, res){
+function getUsers(req, res) {
     //Recogemos el id del usuario logeado en este momento (por el middleware)
     var identity_user_id = req.user.sub;
 
-    console.log("aaaas")
     var page = 1;
 
-    if(req.params.page){
+    if (req.params.page) {
         page = req.params.page;
     }
 
     var itemsPerPage = 5;
-    if(req.params.itemsPerPage){
+    if (req.params.itemsPerPage) {
         itemsPerPage = req.params.itemsPerPage
     }
 
-    User.find().sort('_id').paginate(page, itemsPerPage).then((users) => {
-        if(!users) return res.status(404).send({message: "No hay usuarios disponibles"});
+    User.countDocuments().then(result => {
+        User.find().sort('_id').paginate(page, itemsPerPage).then((users) => {
+            if (!users) return res.status(404).send({ message: "No hay usuarios disponibles" });
 
-        var total = users.length;
+            var total = users.length;
 
-        followUsersIds(identity_user_id).then((value) => {
-            console.log(users)
-            return res.status(200).send({
-                users,
-                total,
-                pages: Math.ceil(total/itemsPerPage),
-                "followed": value.followed,
-                "following": value.following,
+            followUsersIds(identity_user_id).then((value) => {
+
+                return res.status(200).send({
+                    users,
+                    result,
+                    pages: Math.ceil(result / itemsPerPage),
+                    "followed": value.followed,
+                    "following": value.following,
+                })
             })
-        })
 
+        }).catch(err => {
+            if (err) return res.status(500).send({ message: "Error en la petición" });
+
+        })
     }).catch(err => {
-        if(err) return res.status(500).send({message: "Error en la petición"});
+        if (err) return res.status(500).send({ message: "Error en la petición" });
 
     })
 }
