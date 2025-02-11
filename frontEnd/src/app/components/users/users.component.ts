@@ -30,6 +30,9 @@ export class UsersComponent implements OnInit{
 
     public users: any[] = []
     
+    public follows = []
+    public followers = []
+
     constructor(
         private _route: ActivatedRoute,
         private _router: Router,
@@ -88,6 +91,10 @@ export class UsersComponent implements OnInit{
                     this.total = response.total;
 
                     this.pages = response.pages;
+
+                    this.follows = response.following
+
+                    this.followers = response.followed
 
                     if(page > this.pages){
                         this._router.navigate(['/usuarios/', 1])

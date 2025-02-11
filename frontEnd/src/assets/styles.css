@@ -25,6 +25,25 @@
     border: none;
 }
 
+.navbar{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.navigation .navbar-nav .nav-item {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.navigation .navbar-nav .nav-link {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 15px 20px; /* Ajusta el padding si es necesario */
+}
+
+
 .navigation .navbar *{
     color: white !important;
 }
@@ -83,5 +102,9 @@
 }
 
 .page-number{
-    color: black !important;
+    color: black
+}
+
+.icono-navbar{
+    margin-right: 6px;
 }

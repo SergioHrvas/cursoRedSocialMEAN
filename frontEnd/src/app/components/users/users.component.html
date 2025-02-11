@@ -5,9 +5,9 @@
 
         <!-- Lista de usuarios -->
         <div *ngFor="let user of users" class="item-user">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="image-user pull-left">
+            <div class="card card-default">
+                <div class="card-body">
+                    <div class="image-user float-left">
                         <a href="#">
                             <img class="img_user" src="{{ url + 'get-image-user/' + user.image}}" *ngIf="user.image"/>
                         
@@ -15,7 +15,7 @@
                         </a>
                     </div>
 
-                    <div class="user-name pull-left">
+                    <div class="user-name float-left">
                         <p class="name-surname">
                             <a href="#">
                                 {{user.name + ' ' + user.surname}}
@@ -27,16 +27,35 @@
                     </div>
                     
                     <!-- Seguimientos -->
+                    <div class="float-right">
+                        <button type="button" class="btn btn-primary mr-2">
+                            <span class="bi bi-person-fill-add"></span>
+                            Seguir
+                        </button>
+                        
+                        <button type="button" class="btn btn-secondary">
+                            <span class="bi bi-person-fill-dash"></span>
+                            Dejar de seguir
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
         
 
         <!-- Paginación -->
-        <ul class="pagination pull-right">
-            <li *ngIf="page > 1"><a [routerLink]="['/usuarios', prev_page]">Anterior</a></li>
-            <li><span class="page-number">{{page}}</span></li>
-            <li *ngIf="page != pages"><a [routerLink]="['/usuarios', next_page]">Siguiente</a></li>
-        </ul>
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-end"> <!-- Cambiamos pull-right por justify-content-end -->
+                <li class="page-item" *ngIf="page > 1">
+                    <a class="page-link" [routerLink]="['/usuarios', prev_page]">Anterior</a>
+                </li>
+                <li class="page-item">
+                    <span class="page-link page-number">{{page}}</span>
+                </li>
+                <li class="page-item" *ngIf="page != pages">
+                    <a class="page-link" [routerLink]="['/usuarios', next_page]">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>

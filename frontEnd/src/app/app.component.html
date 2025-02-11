@@ -1,81 +1,79 @@
 <div class="navigation col-lg-12">
-  <nav class="navbar navbar-default">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-      <div class="navbar-header">
-        <a [routerLink]="['/home']" class="navbar-brand">{{title}}</a>
-      </div>
-      <ul class="nav navbar-nav" *ngIf="identity">
-        <li>
-          <a class="option-navbar" [routerLink]="['/home']" [routerLinkActive]="['active']">
-            <span class="glyphicon glyphicon-home"></span>
-            Inicio
-          </a>
-        </li>
-        <li>
-          <a class="option-navbar" href>
-            <span class="glyphicon glyphicon-th-list"></span>
-            TimeLine
-          </a>
-        </li>
-        <li>
-          <a class="option-navbar" [routerLink]="['/usuarios']" [routerLinkActive]="['active']">
-            <span class="glyphicon glyphicon-user"></span>
-            Comunidad
-          </a>
-        </li>
-        <li>
-          <a class="option-navbar" href>
-            <span class="glyphicon glyphicon-home"></span>
-            Perfil
-          </a>
-        </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right" *ngIf="!identity">
-        <li>
-          <a class="option-navbar" [routerLink]="['/login']" [routerLinkActive]="['active']">
-            <span class="glyphicon glyphicon-log-in"></span>
-            Login
-          </a>
-        </li>
-        <li>
-          <a class="option-navbar" [routerLink]="['/registro']" [routerLinkActive]="['active']">
-            <span class="glyphicon glyphicon-user"></span>
-            Registro
-          </a>
-        </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right" *ngIf="identity">
-        <li class="avatar" *ngIf="identity">
-          <img src="{{ url + 'get-image-user/' + identity.image }}" 
-          class="rounded-circle" 
-          style="border-radius: 50% !important; width: 50px !important; height: 50px !important; object-fit: cover;" />
-             </li>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            {{identity.name}} <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <a href="#">
-                <span class="glyphicon glyphicon-user"></span>
+      <a class="navbar-brand" [routerLink]="['/home']">{{title}}</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav" *ngIf="identity">
+          <li class="nav-item">
+            <a class="nav-link option-navbar" [routerLink]="['/home']" routerLinkActive="active">
+              <span class="bi bi-house icono-navbar"></span>
+              Inicio
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link option-navbar" href="#">
+              <span class="bi bi-list-task icono-navbar"></span>
+              TimeLine
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link option-navbar" [routerLink]="['/usuarios']" routerLinkActive="active">
+              <span class="bi bi-people icono-navbar"></span>
+              Comunidad
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link option-navbar" href="#">
+              <span class="bi bi-person icono-navbar"></span>
+              Perfil
+            </a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto" *ngIf="!identity">
+          <li class="nav-item">
+            <a class="nav-link option-navbar" [routerLink]="['/login']" routerLinkActive="active">
+              <span class="bi bi-box-arrow-in-right icono-navbar"></span>
+              Login
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link option-navbar" [routerLink]="['/registro']" routerLinkActive="active">
+              <span class="bi bi-person-plus icono-navbar"></span>
+              Registro
+            </a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto" *ngIf="identity">
+          <li class="nav-item avatar">
+            <img src="{{ url + 'get-image-user/' + identity.image }}" class="rounded-circle"
+              style="border-radius: 50% !important; width: 50px !important; height: 50px !important; object-fit: cover;" />
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              {{identity.name}} <span class="caret"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">
+                <span class="bi bi-person"></span>
                 Mi perfil
               </a>
-            </li>
-            <li>
-              <a [routerLink]="['/mis-datos']">
-                <span class="glyphicon glyphicon-cog"></span>
+              <a class="dropdown-item" [routerLink]="['/mis-datos']">
+                <span class="bi bi-gear"></span>
                 Editar perfil
               </a>
-            </li>
-            <li>
-              <a class="pointer" (click)="logout()" >
-                <span class="glyphicon glyphicon-log-out"></span>
+              <a class="dropdown-item pointer" (click)="logout()">
+                <span class="bi bi-box-arrow-left"></span>
                 Cerrar sesión
               </a>
-            </li>
-          </ul>
-        </li>
-      </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
 </div>

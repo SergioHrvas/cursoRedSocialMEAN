@@ -202,8 +202,6 @@ function getUsers(req, res) {
         User.find().sort('_id').paginate(page, itemsPerPage).then((users) => {
             if (!users) return res.status(404).send({ message: "No hay usuarios disponibles" });
 
-            var total = users.length;
-
             followUsersIds(identity_user_id).then((value) => {
 
                 return res.status(200).send({
