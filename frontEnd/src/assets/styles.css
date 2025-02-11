@@ -81,3 +81,7 @@
 .item-user .user-name .name-surname{
     font-weight: bold;
 }
+
+.page-number{
+    color: black !important;
+}

@@ -52,25 +52,31 @@ export class UsersComponent implements OnInit{
     }
 
     actualPage(): void{
-        let page =  +this._route.snapshot.params['page'];
+        this._route.params.subscribe(params => {
+            
+            let page =  +params['page'];
 
-        this.page = page;
-        
-        if(!page){
-            this.page = 1;
-        }
-        else{
-            this.next_page = this.page + 1;
-            this.prev_page = this.page - 1;
+            this.page = page;
 
-            if (this.prev_page <= 0){
-                this.prev_page = 1;
+            
+            if(!page){
+                this.page = 1;
+                page = 1;
             }
-        }
-
-
-            // Return user list
-            this.getUsers(page)
+            else{
+                this.next_page = this.page + 1;
+                this.prev_page = this.page - 1;
+    
+                if (this.prev_page <= 0){
+                    this.prev_page = 1;
+                }
+            }
+    
+    
+                // Return user list
+                this.getUsers(page)
+    
+        })
 
     }
     
@@ -86,7 +92,6 @@ export class UsersComponent implements OnInit{
                     if(page > this.pages){
                         this._router.navigate(['/usuarios/', 1])
                     }
-                    console.log(response)
                 } else {
                     // Asigna un array vacío para evitar errores en la vista
                     this.users = [];
