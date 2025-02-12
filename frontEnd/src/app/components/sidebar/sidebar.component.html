@@ -1,0 +1,32 @@
+<div id="user-card" class="card card-default text-center box-default">
+    <div class="card-body">
+        <div class="avatar mx-auto" *ngIf="identity">
+            <a href="#">
+                <img class="img-user" src="{{ url + 'get-image-user/' + identity.image}}" *ngIf="identity.image" />
+                <img class="img-user" src="img/user.png" *ngIf="!identity.image" />
+            </a>
+        </div>
+        <div class="user-name">
+            <p class="name-surname">
+                <a href="#">
+                    {{identity.name + ' ' + identity.surname}}
+                </a>
+            </p>
+            <p class="username">
+                {{'@' + identity.username}}
+            </p>
+
+        </div>
+
+        <div class="user-stats">
+            <div class="stats">
+                <p class="number-stats">{{stats.counters.following}} Siguiendo</p>
+                <p class="number-stats">{{stats.counters.followed}} Seguidores</p>
+
+                <p class="number-stats">{{stats.counters.publications}} Publicaciones</p>
+            </div>
+
+        </div>
+
+    </div>
+</div>

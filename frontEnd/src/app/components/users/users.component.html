@@ -1,72 +1,81 @@
-<div class="col-lg-8">
-    <h1 class="h1-strong">{{title}}</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-9">
+            <h1 class="h1-strong">{{title}}</h1>
 
-    <div class="comunidad">
+            <div class="comunidad">
 
-        <!-- Lista de usuarios -->
-        <div *ngFor="let user of users" class="item-user">
-            <div class="card card-default">
-                <div class="card-body">
-                    <div class="image-user float-left">
-                        <a href="#">
-                            <img class="img_user" src="{{ url + 'get-image-user/' + user.image}}" *ngIf="user.image" />
+                <!-- Lista de usuarios -->
+                <div *ngFor="let user of users" class="item-user">
+                    <div class="card card-default">
+                        <div class="card-body">
+                            <div class="image-user float-left">
+                                <a href="#">
+                                    <img class="img_user" src="{{ url + 'get-image-user/' + user.image}}"
+                                        *ngIf="user.image" />
 
-                            <img class="img_user" src="img/user.png" *ngIf="!user.image" />
-                        </a>
-                    </div>
+                                    <img class="img_user" src="img/user.png" *ngIf="!user.image" />
+                                </a>
+                            </div>
 
-                    <div class="user-name float-left">
-                        <p class="name-surname">
-                            <a href="#">
-                                {{user.name + ' ' + user.surname}}
-                            </a>
-                        </p>
-                        <p class="username">
-                            {{'@' + user.username}}
-                        </p>
-                    </div>
+                            <div class="user-name float-left">
+                                <p class="name-surname">
+                                    <a href="#">
+                                        {{user.name + ' ' + user.surname}}
+                                    </a>
+                                </p>
+                                <p class="username">
+                                    {{'@' + user.username}}
+                                </p>
+                            </div>
 
-                    <!-- Seguimientos -->
-                    <div class="float-right">
-                        <button type="button" (click)="addFollow(user._id)" class="btn btn-primary mr-2" *ngIf="follows.indexOf(user._id) < 0">
-                            <span class="bi bi-person-fill-add"></span>
-                            Seguir
-                        </button>
-                        
-                        <button type="button" (click)="deleteFollow(user._id)" class="btn"
-                        [class.btn-outline-secondary]="user._id == followUserOver"
-                        [class.btn-secondary]="user._id != followUserOver"
-                         *ngIf="follows.indexOf(user._id) >= 0"
-                            (mouseenter)="mouseEnter(user._id)" (mouseleave)="mouseLeave(user._id)">
-                            <span *ngIf="user._id == followUserOver; else following">
-                                <span class="bi bi-person-fill-dash"></span>
-                                Dejar de seguir
-                            </span>
+                            <!-- Seguimientos -->
+                            <div class="float-right">
+                                <button type="button" (click)="addFollow(user._id)" class="btn btn-primary mr-2"
+                                    *ngIf="follows.indexOf(user._id) < 0">
+                                    <span class="bi bi-person-fill-add"></span>
+                                    Seguir
+                                </button>
 
-                            <ng-template #following>
-                                <span class="bi bi-person-fill-check"></span>
-                                Siguiendo
-                            </ng-template>
-                        </button>
+                                <button type="button" (click)="deleteFollow(user._id)" class="btn"
+                                    [class.btn-outline-secondary]="user._id == followUserOver"
+                                    [class.btn-secondary]="user._id != followUserOver"
+                                    *ngIf="follows.indexOf(user._id) >= 0" (mouseenter)="mouseEnter(user._id)"
+                                    (mouseleave)="mouseLeave(user._id)">
+                                    <span *ngIf="user._id == followUserOver; else following">
+                                        <span class="bi bi-person-fill-dash"></span>
+                                        Dejar de seguir
+                                    </span>
+
+                                    <ng-template #following>
+                                        <span class="bi bi-person-fill-check"></span>
+                                        Siguiendo
+                                    </ng-template>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                Publicaciones
+                <!-- Paginación -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-end"> <!-- Cambiamos pull-right por justify-content-end -->
+                        <li class="page-item" *ngIf="page > 1">
+                            <a class="page-link" [routerLink]="['/usuarios', prev_page]">Anterior</a>
+                        </li>
+                        <li class="page-item">
+                            <span class="page-link page-number">{{page}}</span>
+                        </li>
+                        <li class="page-item" *ngIf="page != pages">
+                            <a class="page-link" [routerLink]="['/usuarios', next_page]">Siguiente</a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
-
-
-        <!-- Paginación -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-end"> <!-- Cambiamos pull-right por justify-content-end -->
-                <li class="page-item" *ngIf="page > 1">
-                    <a class="page-link" [routerLink]="['/usuarios', prev_page]">Anterior</a>
-                </li>
-                <li class="page-item">
-                    <span class="page-link page-number">{{page}}</span>
-                </li>
-                <li class="page-item" *ngIf="page != pages">
-                    <a class="page-link" [routerLink]="['/usuarios', next_page]">Siguiente</a>
-                </li>
-            </ul>
-        </nav>
+        <div class="col-lg-3">
+            <sidebar></sidebar>
+        </div>
     </div>
 </div>

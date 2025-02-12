@@ -77,15 +77,19 @@ export class UserService{
     }
 
     getStats(){
-        let stats_local = localStorage.getItem('stats');
-        let stats = stats_local != null ? JSON.parse(stats_local) : JSON.parse("");
+        if (typeof window !== 'undefined' && localStorage) {
+            let stats_local = localStorage.getItem('stats');
+            let stats = stats_local != null ? JSON.parse(stats_local) : JSON.parse("{}");
         
-        if(stats != "undefined"){
-            this.stats = stats;
-        }else{
-            this.stats = null;
+            if(stats != "undefined"){
+                this.stats = stats;
+            }else{
+                this.stats = null;
+            }
         }
         return this.stats;
+
+
     }
 
     getCounters(userId = null): Observable<any>{
