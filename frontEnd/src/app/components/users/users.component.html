@@ -28,12 +28,12 @@
 
                     <!-- Seguimientos -->
                     <div class="float-right">
-                        <button type="button" class="btn btn-primary mr-2" *ngIf="follows.indexOf(user._id) < 0">
+                        <button type="button" (click)="addFollow(user._id)" class="btn btn-primary mr-2" *ngIf="follows.indexOf(user._id) < 0">
                             <span class="bi bi-person-fill-add"></span>
                             Seguir
                         </button>
                         
-                        <button type="button" class="btn"
+                        <button type="button" (click)="deleteFollow(user._id)" class="btn"
                         [class.btn-outline-secondary]="user._id == followUserOver"
                         [class.btn-secondary]="user._id != followUserOver"
                          *ngIf="follows.indexOf(user._id) >= 0"

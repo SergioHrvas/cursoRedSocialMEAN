@@ -3,11 +3,13 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 import { User } from "../../models/user";
 import { UserService } from "../../services/user.service";
 import { GLOBAL } from "../../services/global";
+import { FollowService } from "../../services/follow.service";
+import { Follow } from "../../models/follow";
 
 @Component({
     selector: 'users',
     templateUrl: './users.component.html',
-    providers: [UserService]
+    providers: [UserService, FollowService]
 })
 export class UsersComponent implements OnInit{
     public title: String;
@@ -38,7 +40,9 @@ export class UsersComponent implements OnInit{
     constructor(
         private _route: ActivatedRoute,
         private _router: Router,
-        private _userService: UserService
+        private _userService: UserService,
+        private _followService: FollowService
+
     ){
         this.title = "USUARIOS"
         this.identity = _userService.getIdentity()
@@ -128,4 +132,35 @@ export class UsersComponent implements OnInit{
         this.followUserOver = 0;
     }
     
+    addFollow(user_to: any){
+        this._followService.addFollow(this.token, user_to).subscribe(
+            response => {
+                if(!response){
+                    this.status = 'error'
+                }else{
+                    this.status = 'success'
+                    this.follows.push(user_to)
+                }
+            }
+        )
+    }
+
+    deleteFollow(user_to: any){
+        this._followService.deleteFollow(this.token, user_to).subscribe(
+            response => {
+                if(!response){
+                    this.status = 'error'
+                }
+                else{
+                    this.status = 'success'
+                    let search = this.follows.indexOf(user_to)
+                    if(search != -1){
+                        this.follows.splice(search, 1)
+                    }
+
+                }
+            }
+        )   
+    }
+
 }
