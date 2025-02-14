@@ -7,11 +7,12 @@ import { UserService } from "../../services/user.service";
 import { GLOBAL } from "../../services/global";
 import { FollowService } from "../../services/follow.service";
 import { Follow } from "../../models/follow";
+import { PublicationService } from "../../services/publication.service";
 
 @Component({
     selector: 'timeline',
     templateUrl: './timeline.component.html',
-    providers: [UserService, FollowService]
+    providers: [UserService, PublicationService]
 })
 export class TimelineComponent implements OnInit{
     public title: String;
@@ -40,7 +41,7 @@ export class TimelineComponent implements OnInit{
         private _route: ActivatedRoute,
         private _router: Router,
         private _userService: UserService,
-        private _followService: FollowService
+        private _publicationService: PublicationService
 
     ){
         this.title = "TIMELINE"
@@ -56,51 +57,18 @@ export class TimelineComponent implements OnInit{
     ngOnInit() {
         console.log("El componente de timeline ha sido inicializado")
         
-        this.actualPage()
+        this.getPublications()
     }
 
-    actualPage(): void{
-        this._route.params.subscribe(params => {
-            
-            let page =  +params['page'];
 
-            this.page = page;
-
-            
-            if(!page){
-                this.page = 1;
-                page = 1;
-            }
-            else{
-                this.next_page = this.page + 1;
-                this.prev_page = this.page - 1;
-    
-                if (this.prev_page <= 0){
-                    this.prev_page = 1;
-                }
-            }
-    
-    
-                // Return user list
-                this.getUsers(page)
-    
-        })
-
-    }
-    
-    getUsers(page: any = 1){
-        this._userService.getUsers(page).subscribe(
+    getPublications(page: any = 1){
+        this._publicationService.getPublications(this.token, page).subscribe(
             response => {
-                if (response && response.users) {
+                if (response && response.publications) {
                     this.publications = response.publications;
                     this.total = response.total;
-
                     this.pages = response.pages;
 
-
-                    if(page > this.pages){
-                        this._router.navigate(['/usuarios/', 1])
-                    }
                 } else {
                     // Asigna un array vacío para evitar errores en la vista
                     this.publications = [];
