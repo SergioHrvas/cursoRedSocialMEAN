@@ -52,7 +52,13 @@
     </div>
 </div>
 <div class="publication card card-default text-center box-default mt-4 pb-2 pt-2 pr-2 pl-2">
-    <form action="" method="post" enctype="multipart/form-data" (ngSubmit)="onSubmit()">
+    <div class="alert alert-success" *ngIf="status == 'success'">
+        <p>Publicación enviada correctamente</p>
+    </div>
+    <div class="alert alert-danger" *ngIf="status == 'error'">
+        <p>Error en la publicación</p>
+    </div>
+    <form #newPostForm="ngForm" action="" method="post" enctype="multipart/form-data" (ngSubmit)="onSubmit(newPostForm)">
         <div class="form-group">
             <textarea class="form-control post-area" name="text" [(ngModel)]="publication.text"
                 placeholder="¿Qué estás pensando?"></textarea>
