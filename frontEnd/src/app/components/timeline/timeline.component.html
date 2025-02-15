@@ -7,7 +7,7 @@
 
                 <!-- Lista de usuarios -->
                 <div *ngFor="let publication of publications" class="item-user">
-                    <div class="card card-default">
+                    <div class="card card-default mb-4">
                         <div class="card-body d-flex flex-column">
                             <!-- Datos del usuario -->
                             <div class="user-data d-flex">
@@ -19,32 +19,37 @@
                                         <img class="img-user" src="img/user.png" *ngIf="!publication.user.image" />
                                     </a>
                                 </div>
-                                <div class="user-name d-flex">
-                                    <p class="name-surname mr-2">
-                                        <a href="#">{{publication.user.name + ' ' + publication.user.surname}}</a>
-                                    </p>
-                                    <p class="username">
-                                        {{'@' + publication.user.username}}
-                                    </p>
+                                <div class="d-flex flex-column w-100">
+                                    <div class="user-name d-flex">
+                                        <p class="name-surname mr-2">
+                                            <a href="#">{{publication.user.name + ' ' + publication.user.surname}}</a>
+                                        </p>
+                                        <p class="username">
+                                            {{'@' + publication.user.username}}
+                                        </p>
+                                    </div>
+
+                                                            
+                                    <!-- Contenedor para el texto y la imagen de la publicación -->
+                                    <div class="publication-content mt-3">
+                                        <div class="publication-text">
+                                            <p>{{publication.text}}</p>
+                                        </div>
+                                        <div class="publication-image">
+                                            <img src="{{ url + 'get-image-publication/' + publication.image }}"
+                                                *ngIf="publication.image" />
+                                        </div>
+                                    </div>
+                                                                <!-- Botones de interacción -->
+                                    <div class="publication-likes mt-2 ml-auto">
+                                        <a href="#"><i class="bi bi-heart-fill mr-3"></i></a>
+                                        <a href="#"><i class="bi bi-chat-dots-fill"></i></a>
+                                    </div>
                                 </div>
                             </div>
+
                         
-                            <!-- Contenedor para el texto y la imagen de la publicación -->
-                            <div class="publication-content mt-3">
-                                <div class="publication-text">
-                                    <p>{{publication.text}}</p>
-                                </div>
-                                <div class="publication-image">
-                                    <img src="{{ url + 'get-image-publication/' + publication.image }}"
-                                        *ngIf="publication.image" />
-                                </div>
-                            </div>
-                        
-                            <!-- Botones de interacción -->
-                            <div class="publication-likes mt-2">
-                                <a href="#" class="btn btn-sm btn-primary">Me gusta</a>
-                                <a href="#" class="btn btn-sm btn-primary">Comentar</a>
-                            </div>
+
                         </div>
                         
                     </div>
