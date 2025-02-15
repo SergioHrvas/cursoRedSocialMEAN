@@ -61,31 +61,55 @@ export class TimelineComponent implements OnInit{
     }
 
 
-    getPublications(page: any = 1){
+    getPublications(page: any = 1, adding: boolean = false){
         this._publicationService.getPublications(this.token, page).subscribe(
             response => {
                 if (response && response.publications) {
-                    this.publications = response.publications;
                     this.total = response.total;
                     this.pages = response.pages;
 
+                    if(adding){
+                        this.page = page;
+                        this.publications = this.publications.concat(response.publications);
+
+                        // Scroll hacia abajo
+                        $('html, body').animate({scrollTop: $('body').prop('scrollHeight')}, 500);
+                    }
+                    else{
+                        this.publications = response.publications;
+                    }
+
+
+
                 } else {
                     // Asigna un array vacío para evitar errores en la vista
-                    this.publications = [];
-                    this.total = 0;
+                    this.status='error';
 
                 }
             },
             error => {
+                var errorMessage = <any>error;
+                
                 if (typeof window !== 'undefined'){
-                    console.log(<any>error);
+                    console.log("error:" + <any>error);
                 }
-                if(<any>error != null){
+                
+                if(errorMessage != null){
                     this.status = 'error';
                 }
             }
         )
     }
 
+    public noMore = false;
+    viewMore(){
+        if(this.publications.length == this.total){
+            this.noMore = true;
+        }
+        else{
+            this.page += 1;
+            this.getPublications(this.page, true);
 
+        }
+    }
 }

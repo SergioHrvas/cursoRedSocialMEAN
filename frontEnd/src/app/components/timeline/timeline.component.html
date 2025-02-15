@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid pb-4">
     <div class="row">
         <div class="col-lg-9">
             <h1 class="h1-strong">{{title}}</h1>
@@ -55,8 +55,18 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Botón para cargar más publicaciones -->
+            <div class="justify-content-center d-flex" *ngIf="page < pages">
+                <button class="btn btn-primary" (click)="viewMore()">Cargar más publicaciones
+                    <i class="bi bi-arrow-repeat"></i>
+                </button>
+            </div>
+
         </div>
-        <div class="col-lg-3">
+
+        <!-- Sidebar -->
+        <div class="col-lg-3 mb-2">
             <sidebar></sidebar>
         </div>
     </div>

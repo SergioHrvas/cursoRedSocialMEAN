@@ -70,23 +70,31 @@ function getPublications(req, res){
             follows_clean.push(follow.followed);
         })
 
-        Publication.find({user: {"$in": follows_clean}}).sort("-created_at").populate("user").paginate(page, itemsPerPage).then(publications =>{
-            var total = publications.length;
-            if(!publications || (total == 0)){
-                return res.status(404).send("No hay publicaciones disponibles");
-            }
+        follows_clean.push(user);
 
-            return res.status(200).send({
-                publications,
-                total,
-                page,
-                pages: Math.ceil(total/itemsPerPage)
-            }
-            )
+        Publication.countDocuments().then(result => {
+        
+            Publication.find({user: {"$in": follows_clean}}).sort("-created_at").populate("user").paginate(page, itemsPerPage).then(publications =>{
+                var total = publications.length;
+                if(!publications || (total == 0)){
+                    return res.status(404).send("No hay publicaciones disponibles");
+                }
 
+                return res.status(200).send({
+                    publications,
+                    total: result,
+                    page,
+                    pages: Math.ceil(result/itemsPerPage)
+                }
+                )
+
+            }).catch(err => {
+                if(err) return res.status(500).send("Error en la operación");
+            })
         }).catch(err => {
             if(err) return res.status(500).send("Error en la operación");
-        })
+        });
+
 
     }).catch(err => {
         if(err) return res.status(500).send("Error en la operación");

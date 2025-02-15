@@ -100,8 +100,6 @@ export class UserService{
         }else{
             return this._http.get(this.url+"follow-counters/", {headers: headers});
         }
-
-        return new Observable();
     }
 
     updateUser(user_to_register: User): Observable<any>{

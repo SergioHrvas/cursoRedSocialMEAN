@@ -33,6 +33,17 @@ export class SidebarComponent implements OnInit{
 
     ngOnInit(): void {
         console.log('sidebar.component cargado correctamente');
+        this._userService.getCounters().subscribe(
+            response => {
+                console.log(response)
+                localStorage.setItem('stats', JSON.stringify(response))
+            },
+            error =>{
+                if(typeof window !== 'undefined' && error != null){+
+                    console.log(error);
+                }
+            }
+        );
     }
 
     onSubmit(form: any){

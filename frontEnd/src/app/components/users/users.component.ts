@@ -81,10 +81,9 @@ export class UsersComponent implements OnInit{
                 }
             }
     
-    
-                // Return user list
-                this.getUsers(page)
-    
+            // Return user list
+            this.getUsers(page)
+
         })
 
     }
