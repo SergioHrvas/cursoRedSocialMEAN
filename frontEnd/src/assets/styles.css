@@ -163,3 +163,8 @@
     border-right: none;
     padding-right: 0;
 }
+
+.date{
+    color: grey;
+    font-size: 12px;
+}

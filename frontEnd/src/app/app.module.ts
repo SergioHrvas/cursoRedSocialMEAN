@@ -3,8 +3,10 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 import {routing, appRoutingProviders} from './app.routing';
 import {FormsModule} from '@angular/forms'
 import {HttpClientModule, provideHttpClient, withFetch} from '@angular/common/http'
+import { MomentModule } from 'ngx-moment';
 
 import { AppRoutingModule } from './app-routing.module';
+
 
 //Componentes
 import { AppComponent } from './app.component';
@@ -15,6 +17,7 @@ import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { UsersComponent } from './components/users/users.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TimelineComponent } from './components/timeline/timeline.component';
+import { PublicationsComponent } from './components/publications/publications.component';
 
 @NgModule({
   declarations: [
@@ -25,14 +28,16 @@ import { TimelineComponent } from './components/timeline/timeline.component';
     UserEditComponent,
     UsersComponent,
     SidebarComponent,
-    TimelineComponent
+    TimelineComponent,
+    PublicationsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    routing
+    routing,
+    MomentModule
   ],
   providers: [
     provideClientHydration(),

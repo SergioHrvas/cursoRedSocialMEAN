@@ -58,7 +58,7 @@
     <div class="alert alert-danger" *ngIf="status == 'error'">
         <p>Error en la publicación</p>
     </div>
-    <form #newPostForm="ngForm" action="" method="post" enctype="multipart/form-data" (ngSubmit)="onSubmit(newPostForm)">
+    <form #newPostForm="ngForm" action="" method="post" enctype="multipart/form-data" (ngSubmit)="onSubmit(newPostForm); sendPublication($event)">
         <div class="form-group">
             <textarea class="form-control post-area" name="text" [(ngModel)]="publication.text"
                 placeholder="¿Qué estás pensando?"></textarea>

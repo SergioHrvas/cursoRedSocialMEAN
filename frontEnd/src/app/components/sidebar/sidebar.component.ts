@@ -1,8 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, EventEmitter, Input, Output} from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { PublicationService } from '../../services/publication.service';
 import { GLOBAL } from '../../services/global';
 import { Publication } from '../../models/publication';
+import moment from 'moment';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
+
 
 @Component({
     selector: 'sidebar',
@@ -16,9 +20,16 @@ export class SidebarComponent implements OnInit{
     public status: string;
     public stats: any;
     public publication: Publication;
+
+
+
+
+
     constructor(
         private _userService: UserService,
-        private _publicationService: PublicationService
+        private _publicationService: PublicationService,
+        private _route: ActivatedRoute,
+        private _router: Router
     ){
         this.identity = this._userService.getIdentity();
         this.status = '';
@@ -35,8 +46,8 @@ export class SidebarComponent implements OnInit{
         console.log('sidebar.component cargado correctamente');
         this._userService.getCounters().subscribe(
             response => {
-                console.log(response)
                 localStorage.setItem('stats', JSON.stringify(response))
+                this.stats = this._userService.getStats()
             },
             error =>{
                 if(typeof window !== 'undefined' && error != null){+
@@ -51,7 +62,9 @@ export class SidebarComponent implements OnInit{
             response => {
                 if(response.publication){
                     this.status = 'success';   
-                    form.reset();                 
+                    form.reset(); 
+                    this.stats.counters.publications += 1;
+                    this._router.navigate(['/timeline'])                
                 }else{
                     this.status = 'error';
                 }
@@ -71,5 +84,11 @@ export class SidebarComponent implements OnInit{
         this.filesToUpload = <Array<File>>fileInput.target.files;
     }
 
+    //Output
+    @Output() sended = new EventEmitter();
+
+    sendPublication(event: any){
+        this.sended.emit({send: 'true'})
+    }
     
 }
