@@ -7,7 +7,9 @@
                 <!-- Datos del usuario -->
                 <div class="user-data d-flex">
                     <div class="avatar mr-4">
-                        <a href="#">
+                        <!--que lleve a profile-->
+                        
+                        <a [routerLink]="['/perfil', publication.user._id]">
                             <img class="img-user"
                                 src="{{ url + 'get-image-user/' + publication.user.image}}"
                                 *ngIf="publication.user.image" />
