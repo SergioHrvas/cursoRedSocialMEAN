@@ -80,4 +80,31 @@ export class ProfileComponent implements OnInit {
         );
     }
 
+
+    followUser(user_to: any){
+        this._followService.addFollow(this.token, user_to).subscribe(
+            response => {
+                if(!response){
+                    this.status = 'error'
+                }else{
+                    this.status = 'success'
+                    this.following = true;
+                }
+            }
+        )
+    }
+
+    unfollowUser(user_to: any){
+        this._followService.deleteFollow(this.token, user_to).subscribe(
+            response => {
+                if(!response){
+                    this.status = 'error'
+                }else{
+                    this.status = 'success'
+                    this.following = false;
+                }
+            }
+        )
+    }
+    
 }
