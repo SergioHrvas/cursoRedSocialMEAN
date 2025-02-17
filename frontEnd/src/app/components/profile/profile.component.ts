@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit {
     public url = GLOBAL.url;
     public following: boolean = false;
     public followed: boolean = false;
+    public messageFromSidebar: any = "mensaje";  // Variable para almacenar el mensaje
 
     constructor(
         private _route: ActivatedRoute,
