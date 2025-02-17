@@ -164,6 +164,9 @@ function getUser(req, res) {
 
 async function followThisUser(identity_user_id, user_id) {
 
+    console.log(identity_user_id);
+    console.log(user_id);
+    
     //Saco si el usuario me sigue a mi
     var followed = await Follow.findOne({ 'user': identity_user_id, 'followed': user_id }).then(follow => {
         return follow;

@@ -53,6 +53,13 @@ export class ProfileComponent implements OnInit {
                     this.user = response.user;
                     this.getCounters(user_id);
 
+                    if(response.following && response.following._id){
+                        this.following = true;
+                    }
+                    if(response.followed && response.followed._id){
+                        this.followed = true;
+                    }
+
                 }else{
                     this.status = 'error';
                     this._router.navigate(['/perfil', this.identity._id]);
