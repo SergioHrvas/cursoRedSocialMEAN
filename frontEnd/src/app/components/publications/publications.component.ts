@@ -48,45 +48,76 @@ export class PublicationsComponent implements OnInit {
     }
 
     
-    getPublications(page: any = 1, adding: boolean = false){
-        this._publicationService.getPublications(this.token, page).subscribe(
-            response => {
-                if (response && response.publications) {
-                    this.total = response.total;
-                    this.pages = response.pages;
-
-                    if(adding){
-                        this.page = page;
-                        this.publications = this.publications.concat(response.publications);
-
-                        // Scroll hacia abajo
-                        $('html, body').animate({scrollTop: $('body').prop('scrollHeight')}, 500);
+    getPublications(page: any = 1, adding: boolean = false, user: any = null){
+        if(user){
+            this._publicationService.getPublicationsUser(user, this.token, page).subscribe(
+                response => {
+                    if (response && response.publications) {
+                        this.total = response.total;
+                        this.pages = response.pages;
+    
+                        if(adding){
+                            this.page = page;
+                            this.publications = this.publications.concat(response.publications);
+    
+                            // Scroll hacia abajo
+                            $('html, body').animate({scrollTop: $('body').prop('scrollHeight')}, 500);
+                        }
+                        else{
+                            this.publications = response.publications;
+                            this.page = 1;
+                        }
+    
+    
+    
+                    } else {
+                        // Asigna un array vacío para evitar errores en la vista
+                        this.status='error';
+    
                     }
-                    else{
-                        this.publications = response.publications;
-                        this.page = 1;
+                }
+            )
+        }
+        else{
+            this._publicationService.getPublications(this.token, page).subscribe(
+                response => {
+                    if (response && response.publications) {
+                        this.total = response.total;
+                        this.pages = response.pages;
+
+                        if(adding){
+                            this.page = page;
+                            this.publications = this.publications.concat(response.publications);
+
+                            // Scroll hacia abajo
+                            $('html, body').animate({scrollTop: $('body').prop('scrollHeight')}, 500);
+                        }
+                        else{
+                            this.publications = response.publications;
+                            this.page = 1;
+                        }
+
+
+
+                    } else {
+                        // Asigna un array vacío para evitar errores en la vista
+                        this.status='error';
+
                     }
-
-
-
-                } else {
-                    // Asigna un array vacío para evitar errores en la vista
-                    this.status='error';
-
+                },
+                error => {
+                    var errorMessage = <any>error;
+                    
+                    if (typeof window !== 'undefined'){
+                        console.log("error:" + <any>error);
+                    }
+                    
+                    if(errorMessage != null){
+                        this.status = 'error';
+                    }
                 }
-            },
-            error => {
-                var errorMessage = <any>error;
-                
-                if (typeof window !== 'undefined'){
-                    console.log("error:" + <any>error);
-                }
-                
-                if(errorMessage != null){
-                    this.status = 'error';
-                }
-            }
-        )
+            )
+        }
     }
     
     public noMore = false;
@@ -129,11 +160,16 @@ export class PublicationsComponent implements OnInit {
       }
 
       @Input() receivedData: any;  // Recibe datos desde TimelineComponent
+      @Input() idUser: any;  // Recibe datos desde TimelineComponent
 
       ngOnChanges(changes: SimpleChanges) {
-        if (changes['receivedData'] && this.receivedData) {
-          this.getPublications();  // Llama a getPublications() cuando receivedData cambia
+        if (changes['idUser'] && this.idUser) {
+            this.getPublications(1, false, this.idUser); // Se ejecuta cuando cambia idUser
+        } else if (changes['receivedData'] && this.receivedData) {
+            this.getPublications(); // Se ejecuta cuando cambia receivedData
         }
-      }
+    
+
+    }
 
 }

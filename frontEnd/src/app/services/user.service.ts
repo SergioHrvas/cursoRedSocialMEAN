@@ -125,7 +125,7 @@ export class UserService{
         let headers = new HttpHeaders().set('Content-Type', 'application/json').set("Authorization", this.getToken());
 
 
-        return this._http.get(this.url + 'user', {headers: headers})
+        return this._http.get(this.url + 'user/' + id, {headers: headers})
 
     }
 }

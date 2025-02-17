@@ -10,7 +10,7 @@
                     <div class="card card-default">
                         <div class="card-body">
                             <div class="image-user float-left">
-                                <a href="#">
+                                <a [routerLink]="['/perfil', user._id]">
                                     <img class="img_user" src="{{ url + 'get-image-user/' + user.image}}"
                                         *ngIf="user.image" />
 
@@ -20,7 +20,7 @@
 
                             <div class="user-name float-left">
                                 <p class="name-surname">
-                                    <a href="#">
+                                    <a [routerLink]="['/perfil', user._id]">
                                         {{user.name + ' ' + user.surname}}
                                     </a>
                                 </p>
@@ -30,7 +30,7 @@
                             </div>
 
                             <!-- Seguimientos -->
-                            <div class="float-right">
+                            <div class="float-right" *ngIf="identity && user._id != identity._id">
                                 <button type="button" (click)="addFollow(user._id)" class="btn btn-primary mr-2"
                                     *ngIf="follows.indexOf(user._id) < 0">
                                     <span class="bi bi-person-fill-add"></span>
