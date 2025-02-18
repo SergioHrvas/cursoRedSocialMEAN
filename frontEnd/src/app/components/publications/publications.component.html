@@ -33,15 +33,14 @@
                             </div>
                         </div>
 
-                                                
                         <!-- Contenedor para el texto y la imagen de la publicación -->
                         <div class="publication-content mt-1">
                             <div class="publication-text">
                                 <p>{{publication.text}}</p>
                             </div>
                             <div class="publication-image">
-                                <img src="{{ url + 'get-image-publication/' + publication.image }}"
-                                    *ngIf="publication.image" />
+                                <img class="img-pub" src="{{ url + 'get-image-pub/' + publication.file }}"
+                                    *ngIf="publication.file" />
                             </div>
                         </div>
                                                     <!-- Botones de interacción -->

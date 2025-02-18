@@ -109,7 +109,7 @@ export class PublicationsComponent implements OnInit {
                     var errorMessage = <any>error;
                     
                     if (typeof window !== 'undefined'){
-                        console.log("error:" + <any>error);
+                        console.log(<any>error);
                     }
                     
                     if(errorMessage != null){

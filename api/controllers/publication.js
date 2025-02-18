@@ -178,13 +178,14 @@ async function uploadImage(req, res){
     var id = req.params.id;
     var user = req.user.sub;
     //Si estamos enviando un fichero, lo subimos y lo guardamos en la db
-    if(req.files.image){
+    if(req.files && req.files.image){
             
         var file_path = req.files.image.path;
-        var file_split = file_path.split('\\');
+        var file_split = file_path.split('/');
 
         var file_name = file_split[2];
 
+        console.log(file_split)
         //Comprobamos si es imagen
         var ext_split = file_name.split('\.');
         var file_ext = ext_split[1].toLowerCase();

@@ -27,7 +27,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link option-navbar" href="#">
+            <a class="nav-link option-navbar" [routerLink]="['/perfil', identity._id]" routerLinkActive="active">
               <span class="bi bi-person icono-navbar"></span>
               Perfil
             </a>
@@ -49,8 +49,10 @@
         </ul>
         <ul class="navbar-nav ml-auto" *ngIf="identity">
           <li class="nav-item avatar">
-            <img src="{{ url + 'get-image-user/' + identity.image }}" class="rounded-circle"
+            <a [routerLink]="['/perfil', identity._id]">
+              <img src="{{ url + 'get-image-user/' + identity.image }}" class="rounded-circle"
               style="border-radius: 50% !important; width: 50px !important; height: 50px !important; object-fit: cover;" />
+            </a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -58,7 +60,7 @@
               {{identity.name}} <span class="caret"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item" [routerLink]="['/perfil', identity._id]">
                 <span class="bi bi-person"></span>
                 Mi perfil
               </a>

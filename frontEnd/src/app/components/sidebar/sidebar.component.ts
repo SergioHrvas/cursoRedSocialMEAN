@@ -5,13 +5,14 @@ import { GLOBAL } from '../../services/global';
 import { Publication } from '../../models/publication';
 import moment from 'moment';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { UploadFilesService } from '../../services/uploadfiles';
 
 
 
 @Component({
     selector: 'sidebar',
     templateUrl: './sidebar.component.html',
-    providers: [UserService, PublicationService]
+    providers: [UserService, PublicationService, UploadFilesService]
 })
 export class SidebarComponent implements OnInit{
     public url = GLOBAL.url;
@@ -28,6 +29,7 @@ export class SidebarComponent implements OnInit{
     constructor(
         private _userService: UserService,
         private _publicationService: PublicationService,
+        private _uploadFilesService: UploadFilesService,
         private _route: ActivatedRoute,
         private _router: Router
     ){
@@ -64,7 +66,22 @@ export class SidebarComponent implements OnInit{
                     this.status = 'success';   
                     form.reset(); 
                     this.stats.counters.publications += 1;
-                    this._router.navigate(['/timeline'])                
+                    this._router.navigate(['/timeline'])   
+                    
+                    
+                    //Subir imagen de usuario
+                    this._uploadFilesService.makeFileRequest('upload-image-pub/' + response.publication._id, [], this.filesToUpload, this.token, 'image').
+                        then((result: any) => {
+                            console.log(result)
+                            this.publication.file = result.publication.image;
+                            if (typeof localStorage !== 'undefined') {
+                                localStorage.setItem('Identity', JSON.stringify(this.publication))
+                            }else {
+                                // If neither localStorage nor sessionStorage is supported
+                                console.log('Web Storage is not supported in this environment.');
+                            }
+                        }); 
+
                 }else{
                     this.status = 'error';
                 }

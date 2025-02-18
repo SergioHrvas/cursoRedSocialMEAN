@@ -2,7 +2,7 @@
 <div id="user-card " class="card card-default text-center box-default">
     <div class="card-body">
         <div class="avatar mx-auto" *ngIf="identity">
-            <a href="#">
+            <a [routerLink]="['/perfil', identity._id]">
                 <img class="img-user" src="{{ url + 'get-image-user/' + identity.image}}" *ngIf="identity.image" />
                 <img class="img-user" src="img/user.png" *ngIf="!identity.image" />
             </a>
