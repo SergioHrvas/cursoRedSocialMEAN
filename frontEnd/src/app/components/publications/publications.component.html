@@ -43,10 +43,16 @@
                                     *ngIf="publication.file" />
                             </div>
                         </div>
-                                                    <!-- Botones de interacción -->
+
+
+                          <!-- Botones de interacción -->
                         <div class="publication-likes mt-2 ml-auto">
                             <a href="#"><i class="bi bi-heart-fill mr-3"></i></a>
                             <a href="#"><i class="bi bi-chat-dots-fill"></i></a>
+
+
+                            <i class="bi bi-trash-fill ml-3 text-danger" *ngIf="publication.user._id == identity._id"
+                                (click)="deletePublication(publication._id)" style="cursor: pointer;"></i>
                         </div>
                     </div>
                 </div>

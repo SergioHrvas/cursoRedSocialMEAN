@@ -45,6 +45,8 @@ export class PublicationsComponent implements OnInit {
     ngOnInit(): void {
         
         this.getPublications()
+        this.identity = this._userService.getIdentity()
+        console.log(this.identity)
     }
 
     
@@ -162,14 +164,28 @@ export class PublicationsComponent implements OnInit {
       @Input() receivedData: any;  // Recibe datos desde TimelineComponent
       @Input() idUser: any;  // Recibe datos desde TimelineComponent
 
-      ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges(changes: SimpleChanges) {
         if (changes['idUser'] && this.idUser) {
             this.getPublications(1, false, this.idUser); // Se ejecuta cuando cambia idUser
         } else if (changes['receivedData'] && this.receivedData) {
             this.getPublications(); // Se ejecuta cuando cambia receivedData
         }
-    
+    }
 
+    deletePublication(id: any){
+        this._publicationService.deletePublication(this.token, id).subscribe(
+            response => {
+                this.publications.forEach((item, index) => {
+                    if (item._id == id) {
+                        this.publications.splice(index, 1);
+                    }
+                }
+            );
+            },
+            error => {
+                console.log(<any>error);
+            }
+        );
     }
 
 }
