@@ -1,18 +1,30 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
-import { User } from "../../models/user";
 import { UserService } from "../../services/user.service";
 import { GLOBAL } from "../../services/global";
 import { FollowService } from "../../services/follow.service";
+import { User } from "../../models/user";
 
 @Component({
-    selector: 'users',
-    templateUrl: './users.component.html',
+    selector: 'seguidos',
+    templateUrl: './following.component.html',
     providers: [UserService, FollowService]
 })
-export class UsersComponent implements OnInit{
+export class FollowingComponent implements OnInit{
     public title: String;
     
+    public user: User = new User(
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+    )
+
     public identity;
     public token;
 
@@ -29,10 +41,9 @@ export class UsersComponent implements OnInit{
 
     public url: string = GLOBAL.url;
 
-    public users: any[] = []
+    public following: any[] = []
     
     public follows: string[] = []
-    public followers: string[] = []
 
     public followUserOver: any;
 
@@ -43,7 +54,7 @@ export class UsersComponent implements OnInit{
         private _followService: FollowService
 
     ){
-        this.title = "USUARIOS"
+        this.title = "Usuarios seguidos por "
         this.identity = _userService.getIdentity()
         this.token = _userService.getToken()
         this.page = 1;
@@ -62,7 +73,9 @@ export class UsersComponent implements OnInit{
     actualPage(): void{
         this._route.params.subscribe(params => {
             
-            let page =  +params['page'];
+            let user_id = params['id'];
+
+            let page = +params['page'];
 
             this.page = page;
 
@@ -80,33 +93,52 @@ export class UsersComponent implements OnInit{
                 }
             }
     
-            // Return user list
-            this.getUsers(page)
+            this.getUser(user_id, page);
+            
 
         })
 
     }
-    
-    getUsers(page: any = 1){
-        this._userService.getUsers(page).subscribe(
+
+    getUser(user_id: any, page: any){
+        this._userService.getUser(user_id).subscribe(
             response => {
-                if (response && response.users) {
-                    this.users = response.users;
+                if (response && response.user) {
+                    this.user.username = response.user.username;
+                    // Return user list
+                    this.getFollows(user_id, page)
+                } else {
+                    this.status = 'error';
+                }
+            },
+            error => {
+                if (typeof window !== 'undefined'){
+                    console.log(<any>error);
+                }
+                if(<any>error != null){
+                    this.status = 'error';
+                }
+            }
+        )
+    }
+    
+    getFollows(user_id: any = 0, page: any = 1){
+        this._followService.getFollowing(this.token, user_id, page).subscribe(
+            response => {
+                if (response && response.follows) {
+                    this.following = response.follows;
                     this.total = response.total;
-
                     this.pages = response.pages;
-
-                    this.follows = response.following
-
-                    this.followers = response.followed
+                    this.follows = response.users_following;
 
                     if(page > this.pages){
-                        this._router.navigate(['/usuarios/', 1])
+                        this._router.navigate(['/seguidos/', user_id, 1])
                     }
                 } else {
                     // Asigna un array vacío para evitar errores en la vista
-                    this.users = [];
+                    this.following = [];
                     this.total = 0;
+                    this.status = 'error';
 
                 }
             },

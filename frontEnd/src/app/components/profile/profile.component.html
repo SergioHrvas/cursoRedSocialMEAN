@@ -16,7 +16,7 @@
 
                     <div class="user-stats w-25 mx-auto mt-4" *ngIf="identity">
                         <div class="stats row">
-                            <a href="" class="div-stats lefts col-md-4">
+                            <a [routerLink]="['/seguidos', user._id, 1]" class="div-stats lefts col-md-4">
                                 <p class="number-stats">{{stats.counters.following}} </p>
                                 <p class="text-stats">
                                     Seguidos
@@ -31,7 +31,7 @@
                             </a>
             
                             <a href="" class="div-stats col-md-4">
-            
+        
                                 <p class="number-stats">{{stats.counters.publications}}</p>
                                 <p class="text-stats">
                                     Publicaciones

@@ -73,22 +73,67 @@ function getFollowingUsers(req, res){
         itemsPerPage = req.params.itemsPerPage
     }
 
+    //Check valid user mongo id (size)
+    if(!user || user.length != 24){
+        return res.status(404).send({message: "El usuario no es válido."});
+    }
+
     Follow.find({'user': user}).populate({path: 'followed'}).paginate(page, itemsPerPage).exec().then((follows) => {
         if(!follows) return res.status(404).send({message: "No hay follows disponibles"});
 
-        var total = follows.length;
-
-        return res.status(200).send({
-            follows,
-            total,
-            pages: Math.ceil(total/itemsPerPage)
+        followUsersIds(user).then((value) => {
+            var total = follows.length;
+            return res.status(200).send({
+                users_following: value.following,
+                follows,
+                total,
+                pages: Math.ceil(total/itemsPerPage)
+            })
+        }
+        ).catch(err => {
+            if(err) return res.status(500).send({message: "Error en la petición"});
         })
     }).catch(err => {
-        if(err) return res.status(500).send({message: "Error en la petición"});
-
+        if(err) {
+            console.log(err)
+            return res.status(500).send({message: "Error en la petición"});
+        }
     })
 
 }
+
+
+
+async function followUsersIds(user_id){
+
+    //Usuarios que me siguen
+    var followed = await Follow.find({'followed': user_id}).select({'_id': 0, '_v': 0, 'followed': 0}).then(follows => {
+        var follows_clean = [];
+
+        follows.forEach((follow) => {
+            follows_clean.push(follow.user)
+        })
+        return follows_clean;
+    }).catch(err => {
+        if(err) return handleError(err);
+    })
+
+    //Usuarios que sigo
+    var following = await Follow.find({'user': user_id}).select({'_id': 0, '_v': 0, 'user': 0}).then(follows => {
+        var follows_clean = [];
+
+        follows.forEach((follow) => {
+            follows_clean.push(follow.followed)
+        })
+        return follows_clean;
+    }).catch(err => {
+        if(err) return handleError(err);
+    })
+
+    return {following, followed};
+}
+
+
 
 function getFollowers(req, res){
     var user = req.user.sub;
