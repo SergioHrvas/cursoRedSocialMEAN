@@ -31,7 +31,17 @@ export class FollowService{
             url = this.url+"get-following-users/"+user_id+"/"+page;
         }
 
-        console.log(url)
+        return this._http.get(url, {headers: headers})
+    }
+
+    getFollowed(token: any, user_id: any, page: number = 1): Observable<any>{
+        let headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', token);
+
+        var url = this.url+"get-followed-users/";
+        if(user_id != null){
+            url = this.url+"get-followed-users/"+user_id+"/"+page;
+        }
+
         return this._http.get(url, {headers: headers})
     }
 }

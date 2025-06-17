@@ -22,7 +22,7 @@
                                     Seguidos
                                 </p>
                             </a>
-                            <a href="" class="div-stats lefts col-md-4">
+                            <a [routerLink]="['/seguidores', user._id, 1]" class="div-stats lefts col-md-4">
             
                                 <p class="number-stats">{{stats.counters.followed}} </p>
                                 <p class="text-stats">

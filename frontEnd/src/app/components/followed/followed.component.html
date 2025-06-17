@@ -1,0 +1,79 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-9">
+            <h1 class="h1-strong">{{title}} {{user.username}}</h1>
+
+            <div class="comunidad">
+                <!-- Lista de usuarios -->
+                <div *ngFor="let user of followed" class="item-user">
+                    <div class="card card-default">
+                        <div class="card-body">
+                            <div class="image-user float-left">
+                                <a [routerLink]="['/perfil', user.user._id]">
+                                    <img class="img_user" src="{{ url + 'get-image-user/' + user.user.image}}"
+                                        *ngIf="user.user.image" />
+
+                                    <img class="img_user" src="img/user.png" *ngIf="!user.user.image" />
+                                </a>
+                            </div>
+
+                            <div class="user-name float-left">
+                                <p class="name-surname">
+                                    <a [routerLink]="['/perfil', user.user._id]">
+                                        {{user.user.name + ' ' + user.user.surname}}
+                                    </a>
+                                </p>
+                                <p class="username">
+                                    {{'@' + user.user.username}}
+                                </p>
+                            </div>
+
+                            <!-- Seguimientos -->
+                            <div class="float-right" *ngIf="identity && user.user._id != identity._id">
+                                <button type="button" (click)="addFollow(user.user._id)" class="btn btn-primary mr-2"
+                                    *ngIf="follows.indexOf(user.user._id) < 0">
+                                    <span class="bi bi-person-fill-add"></span>
+                                    Seguir
+                                </button>
+
+                                <button type="button" (click)="deleteFollow(user.user._id)" class="btn"
+                                    [class.btn-outline-secondary]="user.user._id == followUserOver"
+                                    [class.btn-secondary]="user.user._id != followUserOver"
+                                    *ngIf="follows.indexOf(user.user._id) >= 0" (mouseenter)="mouseEnter(user.user._id)"
+                                    (mouseleave)="mouseLeave()">
+                                    <span *ngIf="user.user._id == followUserOver; else following">
+                                        <span class="bi bi-person-fill-dash"></span>
+                                        Dejar de seguir
+                                    </span>
+
+                                    <ng-template #following>
+                                        <span class="bi bi-person-fill-check"></span>
+                                        Siguiendo
+                                    </ng-template>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paginación -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-end"> <!-- Cambiamos pull-right por justify-content-end -->
+                        <li class="page-item" *ngIf="page > 1">
+                            <a class="page-link" [routerLink]="['/seguidos', identity._id , prev_page]">Anterior</a>
+                        </li>
+                        <li class="page-item">
+                            <span class="page-link page-number">{{page}}</span>
+                        </li>
+                        <li class="page-item" *ngIf="page != pages">
+                            <a class="page-link" [routerLink]="['/seguidos', identity._id, next_page]">Siguiente</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <sidebar></sidebar>
+        </div>
+    </div>
+</div>

@@ -85,6 +85,7 @@ function getFollowingUsers(req, res){
             var total = follows.length;
             return res.status(200).send({
                 users_following: value.following,
+                users_followers: value.followed,
                 follows,
                 total,
                 pages: Math.ceil(total/itemsPerPage)
@@ -101,7 +102,6 @@ function getFollowingUsers(req, res){
     })
 
 }
-
 
 
 async function followUsersIds(user_id){
@@ -153,18 +153,23 @@ function getFollowers(req, res){
         itemsPerPage = req.params.itemsPerPage
     }
 
-    console.log(user);
 
     Follow.find({'followed': user}).populate({path: 'user'}).paginate(page, itemsPerPage).exec().then((follows) => {
         if(!follows) return res.status(404).send({message: "No hay follows disponibles"});
 
-        var total = follows.length;
+        followUsersIds(user).then((value) => {
+            var total = follows.length;
 
-        return res.status(200).send({
-            follows,
-            total,
-            pages: Math.ceil(total/itemsPerPage)
-        })
+            return res.status(200).send({
+                users_following: value.following,
+                users_followers: value.followed,
+                follows,
+                total,
+                pages: Math.ceil(total/itemsPerPage)
+            })
+        }).catch(err => {
+            if(err) return res.status(500).send({message: "Error en la petición"});
+        })  
     }).catch(err => {
         if(err) return res.status(500).send({message: "Error en la petición"});
 
