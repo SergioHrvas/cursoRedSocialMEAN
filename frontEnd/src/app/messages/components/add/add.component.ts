@@ -14,6 +14,4 @@ export class AddComponent implements OnInit {
     ngOnInit(): void {
         console.log("AddComponent inicializado");
     }
-
-
 }

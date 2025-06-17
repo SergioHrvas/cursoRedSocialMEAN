@@ -4,9 +4,10 @@ import {routing, appRoutingProviders} from './app.routing';
 import {FormsModule} from '@angular/forms'
 import {HttpClientModule, provideHttpClient, withFetch} from '@angular/common/http'
 import { MomentModule } from 'ngx-moment';
-
 import { AppRoutingModule } from './app-routing.module';
 
+//Modulo mensajes
+import { MessagesModule } from './messages/messages.module';
 
 //Componentes
 import { AppComponent } from './app.component';
@@ -43,7 +44,8 @@ import { FollowedComponent } from './components/followed/followed.component';
     FormsModule,
     HttpClientModule,
     routing,
-    MomentModule
+    MomentModule,
+    MessagesModule
   ],
   providers: [
     provideClientHydration(),
