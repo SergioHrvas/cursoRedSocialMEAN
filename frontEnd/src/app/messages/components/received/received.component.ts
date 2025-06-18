@@ -118,9 +118,7 @@ export class ReceivedComponent implements OnInit {
     
     getMessages(page: number): void {
         this._messageService.getMyMessages(this.token, page).subscribe(
-            response => {
-                console.log(response)
-   
+            response => {   
                 if (response.messages) {
                     this.messages = response.messages;
                     this.status = "success";

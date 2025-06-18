@@ -8,16 +8,17 @@ import { ReceivedComponent } from "./components/received/received.component";
 import { SentComponent } from "./components/sent/sent.component";
 import { Router } from "express";
 
+import { UserGuard } from "../services/user.guard";
 
 const messagesRouters: Routes = [
     { path: 'mensajes', component: MainComponent,
         children: [
             { path : '', redirectTo: "recibidos", pathMatch: 'full' },
-            { path : 'enviados', component: SentComponent },
-            { path : 'enviados/:page', component: SentComponent },
-            { path : 'recibidos', component: ReceivedComponent },
-            { path : 'recibidos/:page', component: ReceivedComponent },
-            { path : 'nuevo', component: AddComponent },  
+            { path : 'enviados', component: SentComponent, canActivate:[UserGuard] },
+            { path : 'enviados/:page', component: SentComponent, canActivate:[UserGuard] },
+            { path : 'recibidos', component: ReceivedComponent, canActivate:[UserGuard] },
+            { path : 'recibidos/:page', component: ReceivedComponent, canActivate:[UserGuard] },
+            { path : 'nuevo', component: AddComponent, canActivate:[UserGuard] },  
         ]
     }
 ]
