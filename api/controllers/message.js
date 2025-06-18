@@ -20,7 +20,7 @@ function saveMessage(req, res){
     }
 
     var message = new Message();
-    message.emmiter = req.user.sub;
+    message.emitter = req.user.sub;
     message.receiver = params.receiver;
     message.text = params.text;
     message.created_at = moment().unix(); 
@@ -41,7 +41,6 @@ function saveMessage(req, res){
 function getReceivedMessages(req, res){
     var user = req.user.sub;
 
-
     var page = 1;
 
     if(req.params.page){
@@ -53,24 +52,32 @@ function getReceivedMessages(req, res){
         itemsPerPage = req.params.itemsPerPage
     }
 
-    Message.find({'receiver': user}).populate('emmiter', 'name surname username image').paginate(page, itemsPerPage).exec().then((messages) => {
-        if(!messages) return res.status(404).send({message: "No hay mensajes disponibles"});
+    Message.countDocuments({'receiver': user}).then(result => {
+        Message.find({'receiver': user}).populate('emitter', 'name surname username image').paginate(page, itemsPerPage).exec().then((messages) => {
+            var total = messages.length;
 
-        var total = messages.length;
+            if(!messages || (total == 0)){
+                return res.status(404).send("No hay mensajes disponibles");
+            }
 
-        return res.status(200).send({
-            messages,
-            total,
-            pages: Math.ceil(total/itemsPerPage)
+            return res.status(200).send({
+                messages,
+                total: result,
+                page,
+                pages: Math.ceil(result/itemsPerPage)
+            })
+        }).catch(err => {
+            if(err) return res.status(500).send({message: "Error en la petición"});
+
         })
-    }).catch(err => {
+    })
+    .catch(err => {
         if(err) return res.status(500).send({message: "Error en la petición"});
-
     })
 }
 
 
-function getEmmitedMessages(req, res){
+function getEmittedMessages(req, res){
     var user = req.user.sub;
 
 
@@ -85,19 +92,24 @@ function getEmmitedMessages(req, res){
         itemsPerPage = req.params.itemsPerPage
     }
 
-    Message.find({'emmiter': user}).populate('emmiter', 'name surname username image').paginate(page, itemsPerPage).exec().then((messages) => {
-        if(!messages) return res.status(404).send({message: "No hay mensajes disponibles"});
+    Message.countDocuments({'emitter': user}).then(result => {
+        Message.find({'emitter': user}).populate('emitter', 'name surname username image').populate('receiver', 'username').paginate(page, itemsPerPage).exec().then((messages) => {
+            var total = messages.length;
+            if(!messages || (total == 0)){
+                return res.status(404).send("No hay mensajes disponibles");
+            }
 
-        var total = messages.length;
-
-        return res.status(200).send({
-            messages,
-            total,
-            pages: Math.ceil(total/itemsPerPage)
+            return res.status(200).send({
+                messages,
+                total: result,
+                page,
+                pages: Math.ceil(result/itemsPerPage)
+            })
+        }).catch(err => {
+            if(err) return res.status(500).send({message: "Error en la petición"});
         })
     }).catch(err => {
         if(err) return res.status(500).send({message: "Error en la petición"});
-
     })
 }
 
@@ -128,7 +140,7 @@ module.exports = {
     prueba,
     saveMessage,
     getReceivedMessages,
-    getEmmitedMessages,
+    getEmittedMessages,
     getUnviewedMessages,
     viewMessages
 }

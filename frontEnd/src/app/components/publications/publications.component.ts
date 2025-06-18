@@ -43,10 +43,8 @@ export class PublicationsComponent implements OnInit {
 
 
     ngOnInit(): void {
-        
         this.getPublications()
         this.identity = this._userService.getIdentity()
-        console.log(this.identity)
     }
 
     

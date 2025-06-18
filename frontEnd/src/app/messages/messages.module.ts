@@ -3,7 +3,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { MomentModule } from 'ngx-moment';
 //Rutas
 import { MessagesRoutingModule } from './messages-routing.module';
 
@@ -23,7 +23,8 @@ import { SentComponent } from './components/sent/sent.component';
     imports: [
         CommonModule,
         FormsModule,
-        MessagesRoutingModule
+        MessagesRoutingModule,
+        MomentModule
     ],
     exports: [
         MainComponent,

@@ -33,10 +33,17 @@ export class AddComponent implements OnInit {
         private _followService: FollowService,
         private _userService: UserService
     ){
-        this.message = new Message("", "", false, "", "", "");
+        this.message = new Message(
+            new User("", "", "", "", "", "", "", "", ""),
+            new User("", "", "", "", "", "", "", "", ""),
+            false,
+            "",
+            "",
+            ""
+        );
         this.identity = this._userService.getIdentity();
         this.token = this._userService.getToken();
-        this.message.emmiter = this.identity != null ? this.identity._id : "";
+        this.message.emitter = this.identity != null ? this.identity._id : "";
         
         this.url = GLOBAL.url;
         
@@ -60,7 +67,6 @@ export class AddComponent implements OnInit {
             }
             , error => {
                 console.log(<any>error);
-                console.log(error.message)
                 if (error.message) {
                     this.status = "error";
                 }   

@@ -14,7 +14,9 @@ const messagesRouters: Routes = [
         children: [
             { path : '', redirectTo: "recibidos", pathMatch: 'full' },
             { path : 'enviados', component: SentComponent },
+            { path : 'enviados/:page', component: SentComponent },
             { path : 'recibidos', component: ReceivedComponent },
+            { path : 'recibidos/:page', component: ReceivedComponent },
             { path : 'nuevo', component: AddComponent },  
         ]
     }

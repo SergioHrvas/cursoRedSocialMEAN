@@ -28,7 +28,7 @@ export class MessageService {
     }
 
 
-    getEmmitedMessages(token: string, page: number = 1): Observable<any> {
+    getEmittedMessages(token: string, page: number = 1): Observable<any> {
         let headers = new HttpHeaders().set('Content-Type', 'application/json')
                                       .set('Authorization', token);
 
