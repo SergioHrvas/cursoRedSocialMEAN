@@ -23,7 +23,7 @@ export class AddComponent implements OnInit {
     public url: string = GLOBAL.url;
 
     public follows: Follow[] = [];
-    public status: string = "success";
+    public status: string = "";
 
 
     constructor(        
@@ -36,7 +36,7 @@ export class AddComponent implements OnInit {
         this.message = new Message("", "", false, "", "", "");
         this.identity = this._userService.getIdentity();
         this.token = this._userService.getToken();
-        this.message.emmiter = this.identity._id;
+        this.message.emmiter = this.identity != null ? this.identity._id : "";
         
         this.url = GLOBAL.url;
         
@@ -45,5 +45,37 @@ export class AddComponent implements OnInit {
 
     ngOnInit(): void {
         console.log("AddComponent inicializado");
+        this.getMyFollows()
+    }
+
+    onSubmit(form: any) {
+        this._messageService.sendMessage(this.token, this.message).subscribe(
+            response => {
+                if (response.message) {
+                    this.status = "success";
+                    form.reset();
+                } else {
+                    this.status = "error";
+                }
+            }
+            , error => {
+                console.log(<any>error);
+                console.log(error.message)
+                if (error.message) {
+                    this.status = "error";
+                }   
+            }
+        )
+    }
+
+    getMyFollows() {
+        this._followService.getMyFollows(this.token).subscribe(
+            response => {
+                this.follows = response.follows;
+            },
+            error => {
+                console.log(<any>error);
+            }
+        )
     }
 }

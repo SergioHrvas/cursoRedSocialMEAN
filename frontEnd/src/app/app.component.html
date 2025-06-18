@@ -32,6 +32,12 @@
               Perfil
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link option-navbar" [routerLink]="['/mensajes']" routerLinkActive="active">
+              <span class="bi bi-envelope icono-navbar"></span>
+              Mensajes
+            </a>
+          </li>
         </ul>
         <ul class="navbar-nav ml-auto" *ngIf="!identity">
           <li class="nav-item">

@@ -15,7 +15,8 @@ function saveMessage(req, res){
     var params = req.body;
 
     if(!params.text || !params.receiver){
-        return res.status(200).send({message: "Envía los datos necesarios."})
+        console.log(params);
+        return res.status(400).send({message: "Envía los datos necesarios."})
     }
 
     var message = new Message();
